@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miningmark Industry V2</title>
+    <link id="stylesheet" rel="stylesheet" href="css/darkly.css">
+    <link id="mainstylesheet" rel="stylesheet" href="css/style.css">
+    <link rel="icon" type="image/x-icon=" href="img/factory.png">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="js/Material.js"></script>
+    <script src="js/EnergieSpeicher.js"></script>
+    <script src="js/Geld.js"></script>
+    <script src="js/Projekte.js"></script>
+    <script src="js/sonstiges.js"></script>
+    <script src="js/Forschung.js"></script>
+    <script src="js/Planeten.js"></script>
+    <script src="js/Evakuieren.js"></script>
+    <script src="js/Status.js"></script>
+    <script src="js/variablen.js"></script>
+    <script src="js/speichern.js"></script>
+    <script src="js/HTMLForschung.js"></script>
+    <script src="js/HTMLRessourcen.js"></script>
+    <script src="js/HTMLProjekte.js"></script>
+    <script src="js/HTMLPlaneten.js"></script>
+    <script src="js/updates.js"></script>
+    <script src="js/htmlFunctions.js"></script>
+    <script src="js/htmlFunctionsGeldTab.js"></script>
+    <script src="js/htmlFunctionsForschung.js"></script>
+    <script src="js/htmlFunctionsProjekte.js"></script>
+    <script src="js/htmlFunctionsPlaneten.js"></script>
+    <script src="js/htmlFunctionsInterstellar.js"></script>
+    <script src="js/htmlFunctionsStatus.js"></script>
+    <script src="js/game.js"></script>
+</head>
+<body>
+    
+    <div id="intro" class="seite" style=" background-color: black; display: none;">
+        <div style="font-size: 36px; width: 500px; margin: auto; padding-top: 200px; text-align: center;">
+            Miningmark Industry
+        </div>
+        <div style="font-size: 24px; width: 500px; margin: auto; padding-top: 50px; text-align: center;">
+            Du wurdest mir der Aufgabe betraut die Erde zu evakuieren, da Wissenschaftler ein Schwarzes Loch auf Kollisionskurs mit unserem Sonnensystem entdeckt haben.
+        </div>
+        <div style="text-align: center; margin-top: 100px;">
+            <button onclick="start()" id="spielStart" style="align-content: center; font-size: 30px;" type="button" class="btn btn-primary btn-lg">Spiel-Start</button>
+        </div>
+    </div>
+
+    <div id="outro"  class="seite" style=" background-color: black; display: none;">
+        <div style="font-size: 36px; width: 500px; margin: auto; padding-top: 200px; text-align: center;">
+            Herzlichen Glückwunsch
+        </div>
+        <div id="endText" style="font-size: 24px; width: 500px; margin: auto; padding-top: 50px; text-align: center;">
+            XXX
+        </div>
+        <div style="text-align: center; margin-top: 100px;">
+            <button onclick="ende()" id="neuStart" style="align-content: center; font-size: 30px;" type="button" class="btn btn-primary btn-lg">Neues-Spiel</button>
+        </div>
+    </div>
+
+    <div id="spiel" style="display: none;">
+<!-- Kopfzeile -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Miningmark Industry</a>
+            <div>
+                <a id="speicherZeit" >
+                    Autosave Zeit
+                </a>
+
+            </div>
+        </div>
+    </nav>
+  
+<!-- TAB Menüleiste -->
+    <div style="height: 30px;"></div>
+    <div style="margin: 30px;">
+        <ul class="nav nav-tabs">       <!--   style="display: none;"    -->
+            <li class="nav-item"><a href="#" class="tabButton nav-link active" id="ressourcenTabButton">Ressourcen</a></li>
+            <li class="nav-item"><a href="#" class="tabButton nav-link" id="forschungTabButton">Forschung</a></li>
+            <li id="grossProjekte" class="nav-item" style="display: none;"><a href="#" class="tabButton nav-link" id="grossProjekteTabButton">Großprojekte</a></li>
+            <li id="sonnensystem" class="nav-item" style="display: none;"><a href="#" class="tabButton nav-link" id="sonnensystemTabButton">Sonnensystem</a></li>
+            <li id="interstellar" class="nav-item" style="display: none;"><a href="#" class="tabButton nav-link" id="interstellarTabButton">Interstellar</a></li>
+            <li id="evakuierung" class="nav-item" ><a href="#" class="tabButton nav-link" id="evakuierungTabButton">Erd Evakuierung</a></li>
+            <li class="nav-item"><a href="#" class="tabButton nav-link" id="statusTabButton">Status</a></li>
+            <li class="nav-item"><a href="#" class="tabButton nav-link" id="hilfeTabButton">Hilfe/Impressum</a></li>
+        </ul>
+<!-- RessourcenTab -->
+        <div id="myTabContent" class="tab-content" >
+            <div  id="ressourcenTab">
+                <div style="height: 30px;"></div>
+                <div class="hoheDynamisch ressourcenAuswahlContainer container col-xs-1" style="width:490px; padding:0; float:left;">            
+                    <div class="list-group" id="ressourcenAuswahlListe">
+ <!--
+                ressourcenAuswahlListe generieren
+ -->             
+                    </div>
+                </div>
+
+<!-- Material Info TAB -->
+                <div id="ressourcenTabInfo">
+<!-- GeldInfo -->
+                    <div id="00Info" class="hoheDynamisch info card border-primary mb-3 tab-pane in" style="display: none;" >
+                        <div class="card-header" style="font-size: 22px;">Geld</div>
+                        <div id="geldInfoInhalt" class="card-body">
+                            <p class="card-text">Geld die Handelsressource überhaupt</p>
+                            <div style="height: 20px;"></div>
+<!--
+                    GeldInhalt generieren für Material 02-xx
+-->
+                        </div>
+                    </div>
+
+<!-- Energie Info -->
+                    <div id="01Info" class="info card border-primary mb-3 tab-pane in" style="display: none; height: 75vh;" >
+                        <div class="card-header" style="font-size: 22px;">Energie</div>
+                        <div class="card-body">
+                            <p class="card-text">Energie wird durch Energiequellen wie Dampfmaschinen, Solarenergie, Fusionsenergie und sogar durch Kernenergie erzeugt werden. Zu Beginn können Sie maximal 500 Energie besitzen, aber es können Batterien freigeschaltet werden, die diesen Wert erhöhen. </p>
+                            <p id="energieProjektBonus"></p>
+                            <!-- Lager -->
+                            <div class="card border-info mb-3" style="width: 650px;">
+                                <div class="card-header">Energiespeicher</div>
+                                <div class="card-body">
+                                    <span>Hier wird deine gesamte Energie gespeichert <br>
+                                    Aktuelle Speicherauslastung</span> 
+                                    <div class="progress">
+                                        <div id="energieLagerStatus" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Speicher 0 -->
+                            <div class="card border-info mb-3" style="width: 650px;">
+                                <div class="card-header">Akkumulator: <span id="energieSpeicher0Anzahl" >XX</span> </div>
+                                <div class="card-body">
+                                    <span>Der Akkumulator kann geringe Mengen Energie speichern. <br> 
+                                     Speichert: 500 Energie <br> 
+                                    Kostet: <span id="energieSpeicher0geldKosten">900</span>€ </span>
+                                    <div class="kaufButton">
+                                        <button id="01Speicher0Kaufen" style="margin: 10px;" type="button" class="speicherKaufen btn btn-primary">Akkumulator Kaufen</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Speicher 1 -->                                     
+                            <div class="0111 card border-info mb-3" style="width: 650px; display: none;">
+                                <div class="card-header">großer Akkumulator: <span id="energieSpeicher1Anzahl" >XX</span> </div>
+                                <div class="card-body">
+                                    <span>Der große Akkumulator kann Energie speichern. <br> 
+                                     Speichert: 1250 Energie <br> 
+                                    Kostet: <span id="energieSpeicher1geldKosten">2750</span>€ , <span id="energieSpeicher1kupferKosten">550</span> Kupfer</span>
+                                    <div class="kaufButton">
+                                        <button id="01Speicher1Kaufen" style="margin: 10px;" type="button" class="speicherKaufen btn btn-primary">großer Akkumulator Kaufen</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Speicher 2 -->                                     
+                            <div class="0112 card border-info mb-3" style="width: 650px; display: none;">
+                                <div class="card-header">mega Akkumulator: <span id="energieSpeicher2Anzahl" >XX</span> </div>
+                                <div class="card-body">
+                                    <span>Der Mega Akkumulator kann Energie speichern. <br> 
+                                     Speichert: 15000 Energie <br> 
+                                    Kostet: <span id="energieSpeicher2geldKosten">35000</span>€ , <span id="energieSpeicher2kupferKosten">6400</span> Kupfer</span>
+                                    <div class="kaufButton">
+                                        <button id="01Speicher2Kaufen" style="margin: 10px;" type="button" class="speicherKaufen btn btn-primary">mega Akkumulator Kaufen</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Speicher 3 -->                                     
+                            <div class="0113 card border-info mb-3" style="width: 650px; display: none;">
+                                <div class="card-header">giga Akkumulator: <span id="energieSpeicher3Anzahl" >XX</span> </div>
+                                <div class="card-body">
+                                    <span>Der Giga Akkumulator ist die spitze der Energiespeicher. HYPER HYPER! <br> 
+                                     Speichert: 45000 Energie <br> 
+                                    Kostet: <span id="energieSpeicher3geldKosten">235000</span>€ , <span id="energieSpeicher3kupferKosten">26500</span> Kupfer , <span id="energieSpeicher3helium3Kosten">50</span> Helium-3</span>
+                                    <div class="kaufButton">
+                                        <button id="01Speicher3Kaufen" style="margin: 10px;" type="button" class="speicherKaufen btn btn-primary">giga Akkumulator Kaufen</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <!-- Fabrik 0 -->
+                            <div class="card border-info mb-3" style="width: 650px;">
+                                <div class="card-header">Kohlekraftwerk: <span id="energieFabrik0Anzahl" >0</span> </div>
+                                <div class="card-body">
+                                    <span>Produziert: 5 Energie/Sekunde <br> Verbraucht: 2 Holzkohle/Sekunde<br>
+                                    Kostet: <span id="energieFabrik0geldKosten">900</span>€ , <span id="energieFabrik0metallKosten">550</span> Metall</span>
+                                    <div class="kaufButton">
+                                        <button id="01Fabrik0Kaufen" style="margin: 10px;" type="button" class="fabrikKaufen btn btn-primary">Kohlekraftwerk Bauen</button>
+                                        <button id="01Fabrik0verkaufen" style="margin: 10px;" type="button" class="fabrikVerkaufen btn btn-danger">Kohlekraftwerk Abreißen</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fabrik 1 -->
+                            <div class="011 card border-info mb-3" style="width: 650px; display: none;">
+                                <div class="card-header">Solarpanel: <span id="energieFabrik1Anzahl" >0</span> </div>
+                                <div class="card-body">
+                                    <span>Produziert: 2 Energie/Sekunde <br> 
+                                    Kostet: <span id="energieFabrik1geldKosten">950</span>€ , <span id="energieFabrik1metallKosten">550</span> Metall und <span id="energieFabrik1siliziumKosten">175</span> Silizium</span>
+                                    <div class="kaufButton">
+                                        <button id="01Fabrik1Kaufen" style="margin: 10px;" type="button" class="fabrikKaufen btn btn-primary">Solarpanel kaufen</button>
+                                        <button id="01Fabrik1verkaufen" style="margin: 10px;" type="button" class="fabrikVerkaufen btn btn-danger">Solarpanel verkaufen</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fabrik 2 -->
+                            <div class="012 card border-info mb-3" style="width: 650px;">
+                                <div class="card-header">Ölkraftwerk: <span id="energieFabrik2Anzahl" >0</span> </div>
+                                <div class="card-body">
+                                    <span>Produziert: 7 Energie/Sec <br> Verbraucht: 3 Öl/Sec<br>
+                                    Kostet: <span id="energieFabrik2geldKosten">1350</span>€ , <span id="energieFabrik2metallKosten">880</span> Metall</span>
+                                    <div class="kaufButton">
+                                        <button id="01Fabrik2Kaufen" style="margin: 10px;" type="button" class="fabrikKaufen btn btn-primary">Ölkraftwerk Bauen</button>
+                                        <button id="01Fabrik2verkaufen" style="margin: 10px;" type="button" class="fabrikVerkaufen btn btn-danger">Ölkraftwerk Abreißen</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fabrik 3 -->
+                            <div class="013 card border-info mb-3" style="width: 650px; display: none;">
+                                <div class="card-header">Kernkraftwerk: <span id="energieFabrik3Anzahl" >0</span> </div>
+                                <div class="card-body">
+                                    <span>Produziert 140 Energie/Sec <br> Verbraucht: 3 Uran/Sec<br>
+                                    Kostet: <span id="energieFabrik3geldKosten">35000</span>€ , <span id="energieFabrik3metallKosten">5500</span> Metall , <span id="energieFabrik3titanKosten">4500 </span> Titan</span>
+                                    <div class="kaufButton">
+                                        <button id="01Fabrik3Kaufen" style="margin: 10px;" type="button" class="fabrikKaufen btn btn-primary">Kernkraftwerk Bauen</button>
+                                        <button id="01Fabrik3verkaufen" style="margin: 10px;" type="button" class="fabrikVerkaufen btn btn-danger">Kernkraftwerk Abreißen</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fabrik 4 -->
+                            <div class="014 card border-info mb-3" style="width: 650px; display: none;">
+                                <div class="card-header">Fusionskraftwerk: <span id="energieFabrik4Anzahl" >0</span> </div>
+                                <div class="card-body">
+                                    <span>Produziert: 1050 Energie/Sec <br> Verbraucht: 5 Helium-3/Sec<br>
+                                    Kostet: <span id="energieFabrik4geldKosten">65000</span>€ , <span id="energieFabrik4metallKosten">35500</span> Metall , <span id="energieFabrik4titanKosten">24500 </span> Titan , <span id="energieFabrik4schaltkreiseKosten">9500 </span> Schaltkreise</span>
+                                    <div class="kaufButton">
+                                        <button id="01Fabrik4Kaufen" style="margin: 10px;" type="button" class="fabrikKaufen btn btn-primary">Fusionskraftwerk Bauen</button>
+                                        <button id="01Fabrik4verkaufen" style="margin: 10px;" type="button" class="fabrikVerkaufen btn btn-danger">Fusionskraftwerk Abreißen</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<!-- Alle anderen Material Info -->
+
+<!--
+        Material Info generieren
+-->
+
+
+                    </div>
+                </div>
+            </div>
+<!-- Forschung TAB -->
+            <div  id="forschungTab">
+                <div style="height: 30px;"></div>
+                <div id="forscherErwerbenAuswahl" class="hoheDynamisch">
+                    <div class="forschungAuswahlContainer container col-xs-1" style="width:420px; padding:0; float:left; ">
+                        <div class="forscherInfoCard card text-white bg-primary mb-3" >
+                            <div class="card-header">Forschungspunkte</div>
+                            <div class="card-body" style="display: flex;">
+                                <img id="forschungBild" src="img/forschungspunkte.png">
+                                <p id="forschungProSec" >0/Sec</p>
+                                <p id="forschungAnzahl" >0</p>
+                            </div>
+                        </div>
+<!--
+                        Hier werden die Wissenschaftler Generiert
+-->
+                    </div>
+                    <div id="forschungTabInfo">
+                        <div class="hoheDynamisch forschungen card border-primary mb-3 " >
+                            <div class="card-header">Forschungen</div>
+                            <div id="forschungInhalt"  >
+<!--                
+                                Hier werden die Forschungen Generiert 
+-->
+                            </div>
+                        </div>
+            
+                    </div>
+                </div>
+            </div>
+<!-- Großprojekte TAB -->
+            <div  id="grossProjekteTab" >
+                <div style="height: 30px;"></div>
+                <div id="grossProjekteTabInfo" class="hoheDynamisch card border-info mb-3">
+                    <div  id="grossProjekteIhalt" class="card-body" style=" background-color: #222;">
+<!--
+                    Projekte Generieren
+-->                    
+                    </div>
+                </div>
+            </div>
+<!-- Sonnensystem TAB -->
+            <div  id="sonnensystemTab">
+                <div style="height: 30px;"></div>
+                <div class="hoheDynamisch planetenAuswahlContainer container col-xs-1" style="width:400px; padding:0; float:left;">            
+                    <div class="list-group" id="planetenAuswahlListe">
+ <!--
+                Hier wird die HimmelkörperAuswahl Generiert
+ -->             
+                    </div>
+                </div>
+                <div id="planetenTabInfo">
+<!--                
+                            Hier werden die Himmelskörper/Planeten Generiert 
+-->
+                </div>
+                    
+                
+            </div>
+<!-- Interstellar TAB -->
+            <div  id="interstellarTab">
+                <div style="height: 30px;"></div>
+                <div id="interstellarTabInfo" class="hoheDynamisch card border-info mb-3" style="width: 1450px; overflow: auto;">
+                    <div  id="interstellarIhalt" class=" card-body" style=" background-color: #222;">
+                        
+                        <div id="infrastrukturKarte" class=" card  border-info mb-3" style=" height: 300px; width: 1400px; margin: 10px;">
+                            <div class="card-header" style="font-size: 20px;" >Infrastruktur für Alpha Centauri </div>
+                            <div class="card-body" >
+                                <div style="width: 500px;">                                                     
+                                    <p class="card-text" style="padding-left: 50px;" >Bevor du mit der Umsiedelung beginnen kannst, musst du auf Alpha Centauri erstmal die grundlegende Infrastruktur Aufbauen.</p>
+                                </div><img class="" src="img/infrastrukturBunt.png" style="position: absolute; right: 50px; top: 70px; height: 120; float: right;">
+                                <p id="infrastrukturGesamtKosten" style="position: absolute; left: 350px; top: 210px;">Kosten: <span id="infrastrukturgeld">xx</span> €, <span id="infrastrukturtitan">xx</span> Titan, <span id="infrastrukturschaltkreise">xx</span> Schaltkreise, <span id="infrastrukturtreibstoff">xx</span> Treibstoff</p>
+                                <button id="infrastrukturBauen" type="button" class=" btn btn-primary btn-lg" style="position: absolute; left: 50px; top: 200px;">Infrastruktur Bauen</button>
+                                <div id="infrastrukturFortschrittAnzeige" class="progress" style="position: absolute; bottom: 20px; left: 50px; width: 1300px;">
+                                    <div id="infrastrukturFortschritt" class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">  
+                                    </div>
+                                </div>
+                                <p id="infrastrukturFortschrittText" style="position: absolute; bottom: 2px; left: 670px; width: 150px;"> XX%</p>
+                            </div>
+                        </div>
+
+                        <div id="generationenschiffKarte" class="projektIstVersteckt card  border-info mb-3" style=" height: 300px; width: 1400px; margin: 10px;">
+                            <div class="card-header" style="font-size: 20px;" >Generationenschiff <span id="generationenschiffAnzahl">XX</span> </div>
+                            <div class="card-body" >
+                                <div style="width: 500px;">                                                     
+                                    <p class="card-text" style="padding-left: 50px;" >Mit dem Generationenschiff ist es möglich die Menschheit zu Evakuieren. Kapazität ca.120K Passagiere/Sekunde</p>
+                                </div><img class="" src="img/generationenschiffBunt.png" style="position: absolute; right: 50px; top: 70px; height: 120; float: right;">
+                                <p id="" style="position: absolute; left: 350px; top: 210px;">Kosten: <span id="schiffgeld">xx</span> €, <span id="schifftitan">xx</span> Titan, <span id="schiffschaltkreise">xx</span> Schaltkreise, <span id="schifftreibstoff">xx</span> Treibstoff</p>
+                                <button id="generationenschiffBauen" type="button" class=" btn btn-primary btn-lg" style="position: absolute; left: 50px; top: 200px;">Generationenschiff Bauen</button>
+                                <div id="" class="progress" style="position: absolute; bottom: 20px; left: 50px; width: 1300px;">
+                                    <div id="schiffFortschritt" class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">  
+                                    </div>
+                                </div>
+                                <p id="schiffFortschrittText" style="position: absolute; bottom: 2px; left: 670px; width: 150px;"> XX%</p>
+                            </div>
+                        </div>
+
+                        <div id="wurmlochportalKarte" class="projektIstVersteckt card  border-info mb-3" style=" height: 300px; width: 1400px; margin: 10px;">
+                            <div class="card-header" style="font-size: 20px;" >Wurmlochportal <span id="wurmlochportalAnzahl">XX</span></div>
+                            <div class="card-body" >
+                                <div style="width: 500px;">
+                                    <p class="card-text" style="padding-left: 50px;" >Mit dieser Vorrichtung ist es möglich die Menschheit zu Evakuieren. Kapazität ca.1.5Mio Passagiere/Sekunde</p>
+                                </div><img class="" src="img/wurmlochportalBunt.png" style="position: absolute; right: 50px; top: 70px; height: 120; float: right;">
+                                <p id="" style="position: absolute; left: 350px; top: 210px;">Kosten:  <span id="portalgeld">xx</span> €, <span id="portaltitan">xx</span> Titan, <span id="portalschaltkreise">xx</span> Schaltkreise, <span id="portalhelium3">xx</span> Helium-3</p>
+                                <button id="wurmlochportalBauen" type="button" class=" btn btn-primary btn-lg" style="position: absolute; left: 50px; top: 200px;">Wurmlochportal Bauen</button>
+                                <div id="" class="progress" style="position: absolute; bottom: 20px; left: 50px; width: 1300px;">
+                                    <div id="portalFortschritt" class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">  
+                                    </div>
+                                </div>
+                                <p id="portalFortschrittText" style="position: absolute; bottom: 2px; left: 670px; width: 150px;"> XX%</p>
+                            </div>
+                        </div>
+
+
+
+                                            
+                    </div>
+                </div>
+            </div>
+<!-- Erd Evakuierung TAB -->
+            <div  id="evakuierungTab">
+                <div style="height: 30px;"></div>
+
+                <div id="evakuierungTabInfo" class="card border-info mb-3" >
+                    <div style="position: absolute; left: 150px; top: 50px;">
+                        <img class="" src="img/menschen.png">
+                        <p style="text-align: center;"><span id="erdMenschen">XX</span> <br>
+                            Menschen <br> 
+                            auf der Erde</p>
+                    </div>
+                    <img  src="img/pfeil.png" style="position: absolute; left: 570px; top: 50px; width: 300px; height: auto;">
+                    <img id="zielUnbekannt" src="img/frage.png" style="position: absolute; right: 150px; top: 90px; width: 150px; height: auto;">
+                    
+                    <div class="zielBekannt" style="position: absolute; right: 150px; top: 50px; display: none;">
+                        <img class="" src="img/menschen.png">
+                        <p style="text-align: center;"><span id="erdEvakuiert">XX</span> <br>
+                            Menschen <br> 
+                            auf Alpha Centauri</p>
+                    </div>
+                    
+
+                    <div style="position: absolute; left: 100px; bottom: 50px;">
+                        <img class="" src="img/erde.png" style="width: 250px; height: auto;">
+                    </div>
+
+                    <div id="schiffrechts" style="position: absolute; left: 330px; bottom: 230px; display: none;">
+                        <img class="" src="img/raumschiff-rechts.png" style="width: 50px; height: auto;">
+                    </div>
+                    <div id="schifflinks" style="position: absolute; left: 1050px; bottom: 230px; display: none;">
+                        <img class="" src="img/raumschiff-links.png" style="width: 50px; height: auto;">
+                    </div>
+
+                    <div  class="zielBekannt" style="position: absolute; right: 100px; bottom: 50px; display: none;">
+                        <img class="" src="img/alpha-centauri.png" style="width: 250px; height: auto;">
+                    </div>
+
+                    <div  class="portal" style="position: absolute; left: 180px; bottom: 165px; display: none;">
+                        <img class="" src="img/portal.png" style="width: 50px; height: auto;">
+                    </div>
+
+                    <div  class="portal" style="position: absolute; right: 270px; bottom: 190px; display: none;">
+                        <img class="" src="img/portal.png" style="width: 50px; height: auto;">
+                    </div>
+
+                </div>
+
+            </div>
+<!-- Status TAB -->
+            <div  id="statusTab">
+                <div style="height: 25px;"></div>
+                <div class="statusAuswahlContainer container col-xs-1" style="width:300px; padding:0; float:left;">            
+                    <div class="list-group" id="statusAuswahlListe">
+                        
+
+                        <a id="01StatusTab" class="statusAuswahl list-group-item list-group-item-action" style="height: 45px;">
+                            <div class="statusListeObjekt" >
+                                <p class="statusListeObjektName" style="text-align: center;">Speichern</p>
+                            </div>
+                        </a>
+
+                        <a id="02StatusTab" class="statusAuswahl list-group-item list-group-item-action" style="height: 45px;">
+                            <div class="statusListeObjekt" >
+                                <p class="statusListeObjektName" style="text-align: center;">Einstellungen</p>
+                            </div>
+                        </a>
+
+                        <a id="03StatusTab" class="statusAuswahl list-group-item list-group-item-action" style="height: 45px;">
+                            <div class="statusListeObjekt" >
+                                <p class="statusListeObjektName" style="text-align: center;">Statistiken</p>
+                            </div>
+                        </a>
+
+
+
+         
+                    </div>
+                </div>
+                <div id="statusTabInfo" style="position: absolute; left: 350px;">
+
+                    <div id="01Status" class=" card  border-info mb-3" style="width: 500px; height: 500px;  display: none;">
+                        <div class="forschungInfoKopf card-header">Speichern </div>
+                        <div class="card-body" >
+
+                              <p class="card-text">Manuelles Speichern</p>
+                              <button id="spielSpeichern" type="button" class="btn btn-primary">Speichern</button>
+                              <button id="spielLaden" type="button" class="btn btn-primary">Laden</button>
+                              <button id="spielLoschen" href="#wirklichLoschen" type="button" class="btn btn-danger">Löschen</button>
+                              <div style="height: 50px;"></div>
+                              <p class="card-text">Import/Export </p>
+                              <button id="spielExportieren" type="button" class="btn btn-primary">Spielstand Exportieren</button>
+                              <button id="spielImportieren" type="button" class="btn btn-primary">Spielstand Importieren</button>
+                              <div style="height: 20px;"></div>
+                              <div class="form-group">
+                                <textarea class="form-control" id="ioTextfeld" rows="3"></textarea>
+                              </div>
+
+                        </div>
+                    </div>
+
+                    <div id="02Status" class=" card  border-info mb-3" style="width: 500px; height: 500px;  display: none;">
+                        <div class="forschungInfoKopf card-header">Einstellungen </div>
+                        <div style="height: 30px;"></div>
+                        <div class="card border-info mb-3" style="width: 450px; margin: auto;">
+                            <div class="card-header">Design Auswahl</div>
+                            <div class="card-body">
+                                <button style="margin: 10px;" onclick="setStyleSheet('css/darkly.css')" type="button" class="btn btn-primary">Darkly</button>
+                                <button style="margin: 10px;" onclick="setStyleSheet('css/default.css')" type="button" class="btn btn-primary">Default</button>
+                                <button style="margin: 10px;" onclick="setStyleSheet('css/cyborg.css')" type="button" class="btn btn-primary">Cyborg</button>
+                                <button style="margin: 10px;" onclick="setStyleSheet('css/morph.css')" type="button" class="btn btn-primary">Morph</button>
+                                <button style="margin: 10px;" onclick="setStyleSheet('css/quartz.css')" type="button" class="btn btn-primary">Quartz</button>
+                                <button style="margin: 10px;" onclick="setStyleSheet('css/sketchy.css')" type="button" class="btn btn-primary">Sketchy</button>
+                                <button style="margin: 10px;" onclick="setStyleSheet('css/vapor.css')" type="button" class="btn btn-primary">Vapor</button>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+
+                    <div id="03Status" class="hoheDynamisch card  border-info mb-3" style="width: 500px; display: none; overflow: auto;">
+                        <div class="forschungInfoKopf card-header">Statistiken </div>
+                        <div class="card-body" >
+                            <table class="table table-hover" >
+                                <tbody>
+                                    <tr class="table-primary">
+                                        <th scope="row" style="font-size: 24px;">Gebäude</th>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Manuell Abgebaute Rohstoffe</th>
+                                        <td id="manuellAbgebaut">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Gebäude Stufe 1</th>
+                                        <td id="gebaudeStufe1">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Gebäude Stufe 2</th>
+                                        <td id="gebaudeStufe2">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Gebäude Stufe 3</th>
+                                        <td id="gebaudeStufe3">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Gebäude Stufe 4</th>
+                                        <td id="gebaudeStufe4">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row"></th>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="table-primary">
+                                        <th scope="row" style="font-size: 24px;">Freigeschaltet</th>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Reiter freigeschaltet</th>
+                                        <td id="reiterFrei"> XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Forschungen freigeschaltet</th>
+                                        <td id="forschungenFrei">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Projekte freigeschaltet</th>
+                                        <td id="projekteFrei">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Planeten erforscht</th>
+                                        <td id="planetenFrei">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row"></th>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="table-primary">
+                                        <th scope="row" style="font-size: 24px;">Material Produziert</th>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Geld</th>
+                                        <td id="materialAnzahl0">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Energie</th>
+                                        <td id="materialAnzahl1">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Holz</th>
+                                        <td id="materialAnzahl2">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Metall</th>
+                                        <td id="materialAnzahl3">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Öl</th>
+                                        <td id="materialAnzahl4">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Treibstoff</th>
+                                        <td id="materialAnzahl5">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Holzkohle</th>
+                                        <td id="materialAnzahl6">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Kupfer</th>
+                                        <td id="materialAnzahl7">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Gold</th>
+                                        <td id="materialAnzahl8">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Silizium</th>
+                                        <td id="materialAnzahl9">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Schaltkreise</th>
+                                        <td id="materialAnzahl10">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Titan</th>
+                                        <td id="materialAnzahl11">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Uran</th>
+                                        <td id="materialAnzahl12">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Helium-3</th>
+                                        <td id="materialAnzahl13">XX</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row"></th>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="table-primary">
+                                        <th scope="row" style="font-size: 24px;">Spielzeit</th>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <th scope="row">Gesamtzeit</th>
+                                        <td id="gesamtzeit">XX:XX:XX</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+<!-- Hilfe TAB -->
+            <div  id="hilfeTab">
+                <div style="height: 30px;"></div>
+                
+
+                <div class="card text-white bg-primary mb-3" style="max-width: 50rem;">
+                    <div class="card-header">Hilfe</div>
+                    <div class="card-body">
+                        <p class="card-text">Das Ziel von dem Spiel ist es, die Menschheit zu Alpha Centauri umzusiedeln. Dabei gibt es mehrere Wege, dies zu tun. Durch die aufgezeichneten Statistiken können sie die Effizienz ihres Weges mit anderen vergleichen. Viel Spaß beim Spielen.</p>
+                    </div>
+                </div>
+
+                <div class="card text-white bg-primary mb-3" style="max-width: 50rem;">
+                    <div class="card-header">Informationen über Spiel </div>
+                    <div class="card-body">
+                        <h4 class="card-title">Über</h4>
+                        <p class="card-text">Dieses Spiel wurde von mir, Miningmark, als Projekt entwickelt, um meine Fähigkeiten in der Spieleentwicklung zu verbessern. Der Inhalt in diesem Spiel ist nicht immer genau, da das Spiel sonst zu groß und komplex wäre. Daher musste ich mir einige Fakten ausdenken, damit mein Spiel abwechslungsreich bleibt.<br><br></p>
+                        <h4 class="card-title">Hilfsmittel</h4>
+                        <p class="card-text"><a style="color: blue;" href="https://bootswatch.com/">Bootswatch</a> ist ein Design-Werkzeug, das ich benutzt habe, um die verschiedenen Designs zum Spiel hinzuzufügen.</p>
+                        <div class="card-text">Icons erstellt von <a style="color: blue;" href="https://www.freepik.com" title="Freepik">Freepik</a> auf <a style="color: blue;" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+                    </div>
+                </div>
+
+                
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+  
+
+<!-- Fehlermeldung Popup -->
+ 
+    <div id="snackbar1">
+        <div  class="alert alert-dismissible alert-danger">
+            <button  type="button" class="meldung btn-close" data-bs-dismiss="alert"></button>
+            <strong>Fehler: </strong> <a class="alert-link" id="fehlermeldungTitel"> XXXXX</a> 
+        </div>
+    </div>
+
+    <div id="snackbar2">
+        <div  class="alert alert-dismissible alert-success">
+            <button  type="button" class="meldung btn-close" data-bs-dismiss="alert"></button>
+            <a class="alert-link" id="erfolgTitel"> XXXXX</a> 
+        </div>
+    </div>
+
+    <div id="snackbar-container"></div>
+
+
+<!--Ende von div Spiel-->
+    </div>
+  
+  
+
+    
+
+    <div id="wirklichLoschen" class="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Spielstand löschen</h5>
+                    <button id="modalSchliesen" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Möchtest du deinen Spielstand wirklich dauerhaft löschen?</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="modalbestatigen" type="button" class="btn btn-danger">Löschen</button>
+                    <button id="modalAbbrechen" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+  
+
+
+
+  
+</body>
+</html>

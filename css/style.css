@@ -1,0 +1,242 @@
+
+html, body {
+    height: 100%
+}
+
+#forschungTab, #grossProjekteTab, #sonnensystemTab, #interstellarTab, #evakuierungTab, #hilfeTab, #statusTab{
+    display: none;
+}
+
+.ressourcenAuswahlContainer{
+    overflow: auto;
+}
+
+#ressourcenTabInfo{
+    position: relative;
+    left: 500px;
+    width: 500px;
+}
+
+.ressourcenListeObjekt{
+    height: 48px;
+    width: 400px;
+}
+
+.ressourcenListeObjektBild{
+    height: 48px;
+    width: 48px;
+}
+
+.ressourcenListeObjektMaterial{
+    font-size: 18px;
+    position: absolute;
+    left: 80px;
+    top: 17px;
+}
+
+.ressourcenListeObjektProSec{
+    font-size: 18px;
+    position: absolute;
+    left: 200px;
+    top: 17px;
+}
+
+.ressourcenListeObjektAnzahl{
+    font-size: 18px;
+    position: absolute;
+    right: 20px;
+    top: 17px;
+}
+
+.info{
+    width: 700px;
+    height: 700px;
+    position: absolute;
+    overflow: auto;
+}
+
+#hilfeTabButton{
+    position: absolute;
+    right: 40px;
+    
+}
+#statusTabButton{
+    position: absolute;
+    right: 225px;
+}
+
+#forschungProSec{
+    position: absolute;
+    font-size: 20px;
+    left: 180px;
+    top: 70px;
+}
+#forschungAnzahl{
+    position: absolute;
+    font-size: 20px;
+    left: 310px;
+    top: 70px;
+}
+.forscherinfo{
+    position: absolute;
+    font-size: 18px;
+    left: 100px;
+    top: 40px;
+}
+.forscherBild{
+    height: 64px;
+    width: 64px;
+}
+.forscherEinstellKosten{
+    margin-top: 5px;
+}
+.forscherEinstellen, .forscherEntlassen{
+    margin-left: auto;
+    margin-right: auto;
+}
+.forschungen{
+    position: absolute;
+    left: 500px;
+    width: 1000px;
+    overflow: auto;
+}
+.forscherInfoCard{
+    width: 400px;
+}
+#forscherErwerbenAuswahl{
+    overflow: auto;
+    height: 700px;
+    width: 440px;
+    float:left;
+}
+.wissenschaftlerIstVersteckt{
+    display: none;
+}
+
+.forschungInfoKopf{
+    font-size: 20px;
+    padding-top: 17px;
+    height: 60px;
+}
+.check{
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    height: 50px;
+    width: 50px;
+    float: right;
+    display: none;
+}
+#forschungInhalt{
+    display: grid; 
+    grid-template-columns: repeat(3, 320px [col-start]);
+    grid-row-gap: 20px;
+}
+.forschungFreischalten{
+    position: absolute;
+    right: 15px;
+}
+.foschungsKosten{
+    position: absolute;
+    left: 15px;
+}
+.forschungErwerbenInfo{
+    display: flex;  
+    height: 48px;
+}
+.forschungIstVersteckt{
+    display: none;
+}
+
+#grossProjekteTabInfo{
+    position: absolute;
+    left: 30px;
+    width: 1440px;
+    overflow: scroll;
+}
+#grossProjekteIhalt{
+    display: grid;
+    grid-template-columns: repeat(2, 700px);
+    grid-row-gap: 20px;
+}
+.projektIstVersteckt{
+    display: none;
+}
+
+.planetenAuswahlContainer{
+    overflow: auto;
+}
+.check2{
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    height: 50px;
+    width: 50px;
+    float: right;
+    display: none;
+}
+.planetenListeObjektBild{
+    height: 50px;
+    width: 50px;
+}
+.planetenListeObjektName{
+    position: absolute;
+    left: 50px;
+    top: 17px;
+    font-size: 20px;
+    text-align: center;
+    width: 249px;
+}
+.planetenInfo{
+    position: absolute;
+    left: 450px;
+    width: 600px; 
+    display: none;
+}
+
+#evakuierungTabInfo{
+    position: absolute;
+    left: 30px;
+    width: 1440px;
+    height: 700px;
+}
+
+#snackbar1, #snackbar2{
+    visibility: hidden;
+    position: fixed;
+    z-index: 1; 
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#snackbar1.show, #snackbar2.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+  /* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+  
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+  
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+  
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+
+
